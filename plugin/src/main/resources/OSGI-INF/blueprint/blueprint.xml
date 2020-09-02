@@ -8,7 +8,7 @@
     <!-- Configuration stored in $OPENNMS_HOME/etc/org.opennms.integrations.bigpanda.cfg file -->
     <cm:property-placeholder id="bigpandaPluginProperties" persistent-id="org.opennms.integrations.bigpanda" update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="url" value="http://127.0.0.1:8888/target" />
+            <cm:property name="url" value="https://api.bigpanda.io/data/v2/alerts" />
             <cm:property name="apiKey" value="TOKEN" />
         </cm:default-properties>
     </cm:property-placeholder>
