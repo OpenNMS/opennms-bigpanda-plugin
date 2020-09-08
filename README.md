@@ -1,5 +1,34 @@
 # OpenNMS BigPanda Plugin
 
+## Usage
+
+Download the plugin's .kar file into your OpenNMS deploy directory i.e.:
+```
+sudo wget https://github.com/OpenNMS/opennms-bigpanda-plugin/releases/download/alpha1/opennms-bigpanda-plugin.kar -P /opt/opennms/deploy/
+```
+
+Configure the plugin to be installed when OpenNMS starts:
+```
+echo 'opennms-plugins-bigpanda wait-for-kar=opennms-bigpanda-plugin' | sudo tee /opt/opennms/etc/featuresBoot.d/bigpanda.boot
+```
+
+Access the [Karaf shell](https://opennms.discourse.group/t/karaf-cli-cheat-sheet/149) and install the feature manually to avoid having to restart:
+```
+feature:install opennms-plugins-bigpanda
+```
+
+Configure settings:
+```
+config:edit org.opennms.integrations.bigpanda
+property-set token YOUR-TOKEN-HERE
+config:update
+```
+
+Verify your setup:
+```
+opennms:health-check
+```
+
 ## Building
 
 Build and install the plugin into your local Maven repository using:
