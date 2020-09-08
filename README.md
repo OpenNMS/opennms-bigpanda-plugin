@@ -29,6 +29,11 @@ Verify your setup:
 opennms:health-check
 ```
 
+View alert/event statistics:
+```
+opennms-bigpanda:stats
+```
+
 ## Building
 
 Build and install the plugin into your local Maven repository using:
