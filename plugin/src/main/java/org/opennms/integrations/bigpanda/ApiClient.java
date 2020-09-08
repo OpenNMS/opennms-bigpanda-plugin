@@ -70,6 +70,10 @@ public class ApiClient {
         return doPost(url, topology);
     }
 
+    public CompletableFuture<Void> ping() {
+        return doGet(url);
+    }
+
     private CompletableFuture<Void> doPost(String url, Object requestBodyPayload) {
         RequestBody body;
         try {
@@ -85,7 +89,22 @@ public class ApiClient {
                 .addHeader("User-Agent", ApiClient.class.getCanonicalName())
                 .post(body)
                 .build();
+        return doAsync(request);
+    }
 
+    private CompletableFuture<Void> doGet(String url) {
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "Bearer " + apiKey)
+                .addHeader("User-Agent", ApiClient.class.getCanonicalName())
+                .get()
+                .build();
+        return doAsync(request);
+    }
+
+    private CompletableFuture<Void> doAsync(Request request) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         client.newCall(request)
                 .enqueue(new Callback() {
@@ -108,9 +127,9 @@ public class ApiClient {
                                     }
                                     body.close();
                                 }
-
-                                future.completeExceptionally(new Exception("Request failed with response code: "
-                                        + response.code() + " and body: " + bodyPayload));
+                                future.completeExceptionally(new Exception("Request to URL: " + request.url() +
+                                        " failed with response code: " + response.code() +
+                                        " and body: " + bodyPayload));
                             } else {
                                 future.complete(null);
                             }
@@ -121,5 +140,6 @@ public class ApiClient {
                 });
         return future;
     }
+
 
 }

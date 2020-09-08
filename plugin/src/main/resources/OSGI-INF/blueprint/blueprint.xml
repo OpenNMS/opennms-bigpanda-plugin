@@ -24,6 +24,12 @@
         <argument value="${apiKey}"/>
     </bean>
 
+    <!-- Build & expose our health check -->
+    <bean id="healthCheck" class="org.opennms.integrations.bigpanda.ApiHealthCheck">
+        <argument ref="apiClient"/>
+    </bean>
+    <service interface="org.opennms.integration.api.v1.health.HealthCheck" ref="healthCheck"/>
+
     <!-- Build our forwarder bean -->
     <bean id="alarmForwarder" class="org.opennms.integrations.bigpanda.AlarmForwarder">
         <argument ref="apiClient"/>
