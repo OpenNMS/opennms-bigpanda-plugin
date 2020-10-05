@@ -20,7 +20,8 @@ feature:install opennms-plugins-bigpanda
 Configure settings:
 ```
 config:edit org.opennms.integrations.bigpanda
-property-set token YOUR-TOKEN-HERE
+property-set accessToken YOUR-TOKEN-HERE
+property-set applicationKey YOUR-APP-KEY-HERE
 config:update
 ```
 
@@ -49,10 +50,11 @@ feature:repo-add mvn:org.opennms.plugins/karaf-features/1.0.0-SNAPSHOT/xml
 feature:install opennms-plugins-bigpanda
 ```
 
-Configure your API key:
+Configure your API keys:
 ```
 config:edit org.opennms.integrations.bigpanda
-property-set token YOUR-TOKEN-HERE
+property-set accessToken YOUR-TOKEN-HERE
+property-set applicationKey YOUR-APP-KEY-HERE
 config:update
 ```
 

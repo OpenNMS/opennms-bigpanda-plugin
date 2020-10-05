@@ -30,8 +30,10 @@ package org.opennms.integrations.bigpanda;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
+import org.opennms.integration.api.v1.events.EventForwarder;
 import org.opennms.integration.api.v1.model.Alarm;
 import org.opennms.integration.api.v1.model.Severity;
 import org.opennms.integration.api.v1.model.immutables.ImmutableAlarm;
@@ -47,7 +49,10 @@ public class AlarmForwarderTest {
                 .setSeverity(Severity.CRITICAL)
                 .build();
 
-        Alert alert = AlarmForwarder.toAlert(alarm);
+        ApiClient apiClient = mock(ApiClient.class);
+        EventForwarder eventForwarder = mock(EventForwarder.class);
+        AlarmForwarder alarmForwarder = new AlarmForwarder(apiClient, eventForwarder, "my-key");
+        Alert alert = alarmForwarder.toAlert(alarm);
 
         assertThat(alert.getStatus(), equalTo(Alert.Status.CRITICAL));
     }

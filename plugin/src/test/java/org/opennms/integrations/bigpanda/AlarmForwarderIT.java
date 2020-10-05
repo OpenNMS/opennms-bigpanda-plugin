@@ -59,7 +59,7 @@ public class AlarmForwarderIT {
         // Wire it up
         ApiClient apiClient = new ApiClient(wireMockRule.url("/data/v2/alerts"), "<some-token>");
         EventForwarder eventForwarder = mock(EventForwarder.class);
-        AlarmForwarder alarmForwarder = new AlarmForwarder(apiClient, eventForwarder);
+        AlarmForwarder alarmForwarder = new AlarmForwarder(apiClient, eventForwarder, "<some-key>");
 
         // Stub the endpoint
         stubFor(post((urlEqualTo("/data/v2/alerts")))

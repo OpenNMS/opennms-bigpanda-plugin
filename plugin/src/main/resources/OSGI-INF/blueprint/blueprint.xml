@@ -9,7 +9,8 @@
     <cm:property-placeholder id="bigpandaPluginProperties" persistent-id="org.opennms.integrations.bigpanda" update-strategy="reload">
         <cm:default-properties>
             <cm:property name="url" value="https://api.bigpanda.io/data/v2/alerts" />
-            <cm:property name="apiKey" value="TOKEN" />
+            <cm:property name="accessToken" value="ACCESS_TOKEN" />
+            <cm:property name="applicationKey" value="APP_KEY" />
         </cm:default-properties>
     </cm:property-placeholder>
 
@@ -21,7 +22,7 @@
     <!-- Build our API client -->
     <bean id="apiClient" class="org.opennms.integrations.bigpanda.ApiClient">
         <argument value="${url}"/>
-        <argument value="${apiKey}"/>
+        <argument value="${accessToken}"/>
     </bean>
 
     <!-- Build & expose our health check -->
@@ -34,6 +35,7 @@
     <bean id="alarmForwarder" class="org.opennms.integrations.bigpanda.AlarmForwarder">
         <argument ref="apiClient"/>
         <argument ref="eventForwarder"/>
+        <argument value="${applicationKey}"/>
     </bean>
     <!-- Expose the forwarder as a AlarmLifecycleListener so we get callbacks -->
     <service interface="org.opennms.integration.api.v1.alarms.AlarmLifecycleListener" ref="alarmForwarder"/>

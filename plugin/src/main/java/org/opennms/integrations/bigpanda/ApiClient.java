@@ -54,11 +54,11 @@ public class ApiClient {
     private final OkHttpClient client;
     private final ObjectMapper mapper = new ObjectMapper();
     private String url;
-    private String apiKey;
+    private String accessToken;
 
-    public ApiClient(String url, String apiKey) {
+    public ApiClient(String url, String accessToken) {
         this.url = Objects.requireNonNull(url);
-        this.apiKey = Objects.requireNonNull(apiKey);
+        this.accessToken = Objects.requireNonNull(accessToken);
         this.client = new OkHttpClient();
     }
 
@@ -85,7 +85,7 @@ public class ApiClient {
                 .url(url)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer " + apiKey)
+                .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("User-Agent", ApiClient.class.getCanonicalName())
                 .post(body)
                 .build();
@@ -97,7 +97,7 @@ public class ApiClient {
                 .url(url)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer " + apiKey)
+                .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("User-Agent", ApiClient.class.getCanonicalName())
                 .get()
                 .build();

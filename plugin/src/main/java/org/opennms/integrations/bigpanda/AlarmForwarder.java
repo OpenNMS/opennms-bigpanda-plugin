@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.opennms.integration.api.v1.alarms.AlarmLifecycleListener;
+import org.opennms.integration.api.v1.config.events.AlarmType;
 import org.opennms.integration.api.v1.events.EventForwarder;
 import org.opennms.integration.api.v1.model.Alarm;
 import org.opennms.integration.api.v1.model.immutables.ImmutableEventParameter;
@@ -56,10 +57,12 @@ public class AlarmForwarder implements AlarmLifecycleListener {
 
     private final ApiClient apiClient;
     private final EventForwarder eventForwarder;
+    private final String applicationKey;
 
-    public AlarmForwarder(ApiClient apiClient, EventForwarder eventForwarder) {
+    public AlarmForwarder(ApiClient apiClient, EventForwarder eventForwarder, String applicationKey) {
         this.apiClient = Objects.requireNonNull(apiClient);
         this.eventForwarder = Objects.requireNonNull(eventForwarder);
+        this.applicationKey = Objects.requireNonNull(applicationKey);
     }
 
     @Override
@@ -112,8 +115,9 @@ public class AlarmForwarder implements AlarmLifecycleListener {
         // pass
     }
 
-    public static Alert toAlert(Alarm alarm) {
+    public Alert toAlert(Alarm alarm) {
         Alert alert = new Alert();
+        alert.setAppKey(applicationKey);
         alert.setStatus(toStatus(alarm));
         alert.setDescription(alarm.getDescription());
         if (alarm.getNode() != null) {
@@ -126,6 +130,9 @@ public class AlarmForwarder implements AlarmLifecycleListener {
     private static Alert.Status toStatus(Alarm alarm) {
         if (alarm.isAcknowledged()) {
             return Alert.Status.ACKNOWLEDGED;
+        }
+        if (AlarmType.RESOLUTION.equals(alarm.getType())) {
+            return Alert.Status.OK;
         }
         switch (alarm.getSeverity()) {
             case INDETERMINATE:
